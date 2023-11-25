@@ -10,7 +10,6 @@ def get_text_and_html_from_page(url):
         soup = BeautifulSoup(response.text, 'html.parser')
         text_content = soup.get_text(separator=' ')
         cleaned_text = ' '.join(text_content.split())
-        print(cleaned_text)
         return cleaned_text, response.text
     else:
         print(f"Error: Unable to fetch content from {url}. Status code: {response.status_code}")
