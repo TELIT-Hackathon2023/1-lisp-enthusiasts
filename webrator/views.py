@@ -17,7 +17,7 @@ class HelloWorldView(APIView):
 
 
 class AnalyticsView(APIView):
-    def get(self, request):
+    def post(self, request):
         serializer = AnalyticsInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -26,7 +26,6 @@ class AnalyticsView(APIView):
         r = requests.get(analytics + '=' + url)
         final = r.json()
 
-
         return Response({"message": final}, status=status.HTTP_200_OK)
 
 
@@ -34,11 +33,6 @@ class PersonaView(APIView):
     def get(self, request):
         serializer = PersonaInputSerialier(data=request.data)
         serializer.is_valid(raise_exception=True)
-
-        print(os.environ.get('OPENAI_API_KEY'))
-        print("*************************")
-        print(client.api_key)
-        print("*************************")
 
         url = serializer.validated_data['url']
         res = get_text_from_website(url, url, set())
