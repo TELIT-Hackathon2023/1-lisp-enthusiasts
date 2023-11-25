@@ -42,9 +42,18 @@ class PersonaView(APIView):
             {"role": "user", "content": "This is a text content of a website. I want to learn who is the website adressed to. Write a list of personas that the website was created for. For each persona write the name followed by three underscores followed by a short description"}
         ]
 
-        ans = client.chat.completions.create(
+        response = client.chat.completions.create(
             model='gpt-4',
             messages=messages
         )
 
-        return Response({"long": ans, "short": ans["choices"][0]["message"]["content"]})
+        ans = response.choices[0].message.content.split('\n')
+
+        response = {}
+
+        for elm in ans:
+            if len(elm) > 3:
+                values = elm.split('___')
+                response[values[0]] = values[1]
+
+        return Response(response)
