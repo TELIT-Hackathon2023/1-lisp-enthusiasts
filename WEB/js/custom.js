@@ -13,10 +13,13 @@ function submitForm() {
     var fileInput = document.getElementById('file-upload');
     var urlInput = document.getElementById('urlInput');
 
+    var formData = new FormData();
+    formData.append('url', urlInput.value);
+
     // Fetch API to send the POST request
     fetch('http://localhost:8000/api/analytics', {
       method: 'POST',
-      body: {"url":urlInput.value, "code":fileInput.files[0]}
+      body: formData
     })
       .then(response => response.json())
       .then(data => {
