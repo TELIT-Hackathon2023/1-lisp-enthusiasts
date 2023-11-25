@@ -45,6 +45,49 @@ function submitForm() {
 
 
 function renderData(data) {
+  render_time_metrics(data)
+  render_score(data)
+  render_metrics(data)
+}
+
+
+function append_div(title, value, category, description) {
+  const containerDiv = document.createElement('div');
+  const fcpLabel = document.createElement('strong');
+  fcpLabel.textContent = title + ' (' + category + ') = ' + value;
+  const loremParagraph = document.createElement('p');
+  loremParagraph.textContent = description;
+
+  containerDiv.appendChild(fcpLabel);
+  containerDiv.appendChild(loremParagraph);
+  const outputDiv = document.getElementById('output');
+  outputDiv.appendChild(containerDiv);
+}
+
+
+function render_metrics(data) {
+  const keysWithSpecificValue = [];
+  
+  for (const key in data) {
+    if (data.hasOwnProperty(key) && key.includes("_score")) {
+      keysWithSpecificValue.push(key);
+    }
+  
+  }
+
+  for (let i = 0; i < keysWithSpecificValue.length; i++) {
+
+    let lastIndex = keysWithSpecificValue[i].lastIndexOf("_");
+
+    let val = keysWithSpecificValue[i].substring(0, lastIndex);
+    description = val + "_description"
+    console.log(keysWithSpecificValue[i])
+    append_metric(val, data[keysWithSpecificValue[i]], data[description])
+
+  }
+}
+
+function render_time_metrics(data) {
   if (data && 'fcp' in data) {
     append_div("FCP Value", data.fcp, data.fcp_category, 'The First Contentful Paint (FCP) metric measures the time from when the page starts loading to when any part of the pages content is rendered on the screen.')
   }
@@ -63,10 +106,38 @@ function renderData(data) {
 }
 
 
-function append_div(title, value, category, description) {
+function render_score(data) {
+  if (data && 'overall_score' in data) {
+    category = ""
+    if (data.overall_score > 50) {
+      category = "GOOD"
+    }
+    else {
+      category = "BAD"
+    }
+    append_div("Overall score", data.overall_score, category, 'Overall performance and design score')
+  }
+
+  total_tasks_time = data.total_tasks_time
+  num_requests = data.num_requests
+  num_requests_description = data.num_requests_description
+  append_div("Total tasks time", total_tasks_time, num_requests, num_requests_description)
+}
+
+
+function append_metric(title, score, description) {
+  category = ""
+  if (score > 0.8) {
+    category = "GOOD"
+    description = ""
+  }
+  else {
+    category = "BAD"
+  }
+
   const containerDiv = document.createElement('div');
   const fcpLabel = document.createElement('strong');
-  fcpLabel.textContent = title + ' (' + category + ') = ' + value;
+  fcpLabel.textContent = title + ' (' + category + " score: " + score + ')';
   const loremParagraph = document.createElement('p');
   loremParagraph.textContent = description;
 

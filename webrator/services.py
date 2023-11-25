@@ -97,7 +97,7 @@ def parse_json(final):
     final_json["mainthread_description"] = final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["description"]
    
     final_json["mainthread_score"] = mainthread_score
-    final_json["mainthread_duration"] = mainthread_duration
+    final_json["mainthread_value"] = mainthread_duration
     listprocesses = []
     for x in range (len(final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["details"]["items"])):
         duration = final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["details"]["items"][x]["duration"]
@@ -268,16 +268,16 @@ def parse_json(final):
     final_json["blocking_time_description"] = final["lighthouseResult"]["audits"]["total-blocking-time"]["description"]
     try:
         blocking_time_duration = final["lighthouseResult"]["audits"]["total-blocking-time"]["displayValue"]
-        final_json["blocking_time_duration"] = blocking_time_duration
+        final_json["blocking_time_value"] = blocking_time_duration
     except:
-        final_json["blocking_time_duration"] = ""
+        final_json["blocking_time_value"] = ""
     final_json["blocking_time_score"] = blocking_time_score
 
     #First meaningful Paint
 
     fmp_score = final["lighthouseResult"]["audits"]["first-meaningful-paint"]["score"]
-    final_json["fmp_score_description"] = final["lighthouseResult"]["audits"]["first-meaningful-paint"]["description"]
-    final_json["fmp_score_audit"] = fmp_score
+    #final_json["fmp_score_description"] = final["lighthouseResult"]["audits"]["first-meaningful-paint"]["description"]
+    final_json["fmp_score"] = fmp_score
     try:
         fmp = final["lighthouseResult"]["audits"]["first-meaningful-paint"]["displayValue"]
         final_json["fmp_audit"] = fmp
@@ -290,8 +290,8 @@ def parse_json(final):
     #Cumulative layout shift
 
     cls_score = final["lighthouseResult"]["audits"]["cumulative-layout-shift"]["score"]
-    final_json["cls_score_description"] = final["lighthouseResult"]["audits"]["cumulative-layout-shift"]["description"]
-    final_json["cls_score_audit"] = cls_score
+    #final_json["cls_score_description"] = final["lighthouseResult"]["audits"]["cumulative-layout-shift"]["description"]
+    final_json["cls_score"] = cls_score
     try:
         cls = final["lighthouseResult"]["audits"]["cumulative-layout-shift"]["displayValue"]
         final_json["cls_audit"] = cls_score
