@@ -28,7 +28,7 @@ class AnalyticsView(APIView):
 
         parsed_data = parse_json(final)
 
-        return Response({"message": parsed_data}, status=status.HTTP_200_OK)
+        return Response(parsed_data, status=status.HTTP_200_OK)
 
 
 class PersonaView(APIView):
