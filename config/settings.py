@@ -12,6 +12,19 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import openai
+
+with open('.dev.env') as f:
+    for line in f:
+        val = line.strip()
+        val = val.split('=')
+        os.environ[val[0]] = val[1]
+
+
+client = openai.OpenAI(
+    api_key=os.environ.get('OPENAI_API_KEY'),
+)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

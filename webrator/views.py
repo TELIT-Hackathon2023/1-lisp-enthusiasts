@@ -2,7 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import AnalyticsInputSerializer
+from .serializers import AnalyticsInputSerializer, PersonaInputSerialier
+from .services import get_text_from_website
+from config.settings import client
 
 import requests
 import os
@@ -12,16 +14,43 @@ class HelloWorldView(APIView):
     def get(self, request):
         data = {'message': 'Hello, World!'}
         return Response(data)
-    
+
 
 class AnalyticsView(APIView):
     def get(self, request):
         serializer = AnalyticsInputSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        analytics = os.environ.get('ANALYTICS')
         url = serializer.validated_data['url']
-        x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={url}'
-
-        r = requests.get(x)
+        r = requests.get(analytics + '=' + url)
         final = r.json()
+
+
         return Response({"message": final}, status=status.HTTP_200_OK)
+
+
+class PersonaView(APIView):
+    def get(self, request):
+        serializer = PersonaInputSerialier(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        print(os.environ.get('OPENAI_API_KEY'))
+        print("*************************")
+        print(client.api_key)
+        print("*************************")
+
+        url = serializer.validated_data['url']
+        res = get_text_from_website(url, url, set())
+
+        messages = [
+            {"role": "system", "content": res},
+            {"role": "user", "content": "This is a text content of a website. I want to learn who is the website adressed to. Write a list of personas that the website was created for. For each persona write the name followed by three underscores followed by a short description"}
+        ]
+
+        ans = client.chat.completions.create(
+            model='gpt-4',
+            messages=messages
+        )
+
+        return Response({"long": ans, "short": ans["choices"][0]["message"]["content"]})
