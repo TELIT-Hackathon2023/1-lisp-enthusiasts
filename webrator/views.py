@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import AnalyticsInputSerializer, PersonaInputSerialier
-from .services import get_text_from_website
+from .services import get_text_from_website, parse_json
 from config.settings import client
 
 import requests
@@ -26,7 +26,9 @@ class AnalyticsView(APIView):
         r = requests.get(analytics + '=' + url)
         final = r.json()
 
-        return Response({"message": final}, status=status.HTTP_200_OK)
+        parsed_data = parse_json(final)
+
+        return Response({"message": parsed_data}, status=status.HTTP_200_OK)
 
 
 class PersonaView(APIView):
