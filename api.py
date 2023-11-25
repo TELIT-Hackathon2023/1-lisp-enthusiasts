@@ -1,8 +1,8 @@
 import requests
 import json
 
-line = "https://marian.mach.website.tuke.sk/"
-#line = "https://telekom.sk/"
+#line = "https://marian.mach.website.tuke.sk/"
+line = "https://www.orange.sk/"
 x = f'https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={line}'
 print(f'Requesting {x}...')
 
@@ -169,10 +169,13 @@ else:
 #Responsive images
 
 responsive_images_score = final["lighthouseResult"]["audits"]["uses-responsive-images"]["score"]
-responsive_image_savings = final["lighthouseResult"]["audits"]["uses-responsive-images"]["displayValue"]
- 
+try:
+    responsive_image_savings = final["lighthouseResult"]["audits"]["uses-responsive-images"]["displayValue"]
+    print("Responsive images savings: " + str(responsive_image_savings)) 
+except:
+    print("Nope")
 print("Responsive image score: " + str(responsive_images_score))
-print("Responsive images savings: " + str(responsive_image_savings)) 
+    
 listresponsivesavings = []
 for x in range (len(final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"])):
     url = final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"][x]["url"]
@@ -275,26 +278,35 @@ else:
 #Blocking time
 
 blocking_time_score = final["lighthouseResult"]["audits"]["total-blocking-time"]["score"]
-blocking_time_duration = final["lighthouseResult"]["audits"]["total-blocking-time"]["displayValue"]
-
+try:
+    blocking_time_duration = final["lighthouseResult"]["audits"]["total-blocking-time"]["displayValue"]
+    print("Blocking time: " + str(blocking_time_duration))
+except:
+    print("Nope")  
 print("Blocking time score: " + str(blocking_time_score))
-print("Blocking time: " + str(blocking_time_duration))  
+
 
 #First meaningful Paint
 
 fmp_score = final["lighthouseResult"]["audits"]["first-meaningful-paint"]["score"]
-fmp = final["lighthouseResult"]["audits"]["first-meaningful-paint"]["displayValue"]
-
+try:
+    fmp = final["lighthouseResult"]["audits"]["first-meaningful-paint"]["displayValue"]
+    print("FMP time: " + str(fmp)) 
+except:
+    print("nope")
 print("FMP score: " + str(fmp_score))
-print("FMP time: " + str(fmp)) 
+    
 
 #Cumulative layout shift
 
 cls_score = final["lighthouseResult"]["audits"]["cumulative-layout-shift"]["score"]
-cls = final["lighthouseResult"]["audits"]["cumulative-layout-shift"]["displayValue"]
-
+try:
+    cls = final["lighthouseResult"]["audits"]["cumulative-layout-shift"]["displayValue"]
+    print("CLS time: " + str(cls)) 
+except:
+    print("nope")
 print("CLS score: " + str(cls_score))
-print("CLS time: " + str(cls)) 
+
 
 #Network Round trip times
 
@@ -429,7 +441,11 @@ print("Animated content score: " + str(animated_content_score))
 #Unused CSS rules
 
 unused_css_score = final["lighthouseResult"]["audits"]["unused-css-rules"]["score"]
-#unused_css_savings = final["lighthouseResult"]["audits"]["unused-css-rules"]["displayValue"]
+try:
+    unused_css_savings = final["lighthouseResult"]["audits"]["unused-css-rules"]["displayValue"]
+    print("Unused CSS savings: " + str(unused_css_savings)) 
+except:
+    print("nope")
 try:
     css_total_bytes = final["lighthouseResult"]["audits"]["unused-css-rules"]["details"]["items"][0]["totalBytes"]
     css_wasted_bytes = final["lighthouseResult"]["audits"]["unused-css-rules"]["details"]["items"][0]["wastedBytes"]
@@ -438,7 +454,7 @@ try:
 except:
     print("No wasted bytes")
 print("Unused CSS score: " + str(unused_css_score))
-#print("Unused CSS savings: " + str(unused_css_savings)) 
+
 
 #Image thumbnails
 
@@ -455,17 +471,238 @@ network_server_latency = final["lighthouseResult"]["audits"]["network-server-lat
 
 print("Network latency: " + network_server_latency)
 
-#Layout shift elements
-#layout_shift_elements = final["lighthouseResult"]["audits"]["layout-shift-elements"]["displayValue"]
 
-#print()
-#listpath_selector = []
-#for x in range (len(final["lighthouseResult"]["audits"]["layout-shift-elements"]["details"]["items"])):
-#    path = final["lighthouseResult"]["audits"]["layout-shift-elements"]["details"]["items"][x]["node"]["path"]
-#    selector = final["lighthouseResult"]["audits"]["layout-shift-elements"]["details"]["items"][x]["node"]["selector"]
-#    list1 = [path, selector]
-#    listpath_selector.append(list1)
+#Cache memory
+cache_memory_score = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["score"]
+try:
+    resources_to_cache = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["displayValue"]
+    print("Resources of cache: " + str(resources_to_cache))
+except:
+    print("nope") 
+print("Cache memory score: " + str(cache_memory_score))
 
+
+listcache = []
+for x in range (len(final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"])):
+    cachelifetime = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["cacheLifetimeMs"]
+    totalbytes = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["totalBytes"]
+    wastedbytes = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["wastedBytes"]
+    url = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["url"]
+    list1 = [cachelifetime, totalbytes, wastedbytes, url]
+    listcache.append(list1)
+print("ALL in listcache")
+print("Example:")
+if listcache != []:
+    print(listcache[0])
+else:
+    print("No entries!")
+
+#FCP
+fcp_score = final["lighthouseResult"]["audits"]["first-contentful-paint"]["score"]
+fcp_time = final["lighthouseResult"]["audits"]["first-contentful-paint"]["displayValue"]
+
+print("FCP score: " + str(fcp_score))
+print("FCP time: " + str(fcp_time)) 
+
+#FID
+max_potential_fid = final["lighthouseResult"]["audits"]["max-potential-fid"]["score"]
+max_potential_fid_value = final["lighthouseResult"]["audits"]["max-potential-fid"]["displayValue"]
+
+print("FID score: " + str(max_potential_fid))
+print("FID time: " + str(max_potential_fid_value)) 
+
+#Server response time
+
+server_response_time_score = final["lighthouseResult"]["audits"]["server-response-time"]["score"]
+server_response_time = final["lighthouseResult"]["audits"]["server-response-time"]["displayValue"]
+
+print("Server response score: " + str(server_response_time_score))
+print("Server response time: " + str(server_response_time)) 
+
+#LCP
+
+lcp_score = final["lighthouseResult"]["audits"]["largest-contentful-paint"]["score"]
+lcp = final["lighthouseResult"]["audits"]["largest-contentful-paint"]["displayValue"]
+
+print("LCP score: " + str(lcp_score))
+print("LCP time: " + str(lcp)) 
+
+#Time to interactive
+
+time_interactive_score = final["lighthouseResult"]["audits"]["interactive"]["score"]
+time_interactive = final["lighthouseResult"]["audits"]["interactive"]["displayValue"]
+
+print("Time interactive score: " + str(time_interactive_score))
+print("Time interactive time: " + str(time_interactive)) 
+
+#Uminified CSS
+
+unminified_css = final["lighthouseResult"]["audits"]["unminified-css"]["score"]
+unminified_css_savings = final["lighthouseResult"]["audits"]["unminified-css"]["details"]["overallSavingsMs"]
+
+print("Unminified CSS score: " + str(unminified_css))
+print("Unminified CSS time: " + str(unminified_css_savings)) 
+
+#Bootup time
+
+bootup_time_score = final["lighthouseResult"]["audits"]["bootup-time"]["score"]
+
+print("Bootup time score: " + str(bootup_time_score))
+
+
+#Modern images
+
+modern_images_score = final["lighthouseResult"]["audits"]["modern-image-formats"]["score"]
+modern_images_savings = final["lighthouseResult"]["audits"]["modern-image-formats"]["displayValue"]
+ 
+print("Modern images score: " + str(modern_images_score))
+print("Modern images time: " + str(modern_images_savings)) 
+
+listmodernimages = []
+for x in range (len(final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"])):
+    url = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["url"]
+    wastedbytes = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["wastedBytes"]
+    totalbytes = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["totalBytes"]
+    list1 = [url, wastedbytes, totalbytes]
+    listmodernimages.append(list1)
+print("ALL in listmodernimages")
+print("Example:")
+if listmodernimages != []:
+    print(listmodernimages[0])
+else:
+    print("No entries!")
+
+#third party entity
+
+third_party_score = final["lighthouseResult"]["audits"]["third-party-summary"]["score"]
+ 
+print("Third party score: " + str(modern_images_score))
+
+#Final screen of page
+
+import base64
+ 
+img_data_final = final["lighthouseResult"]["audits"]["final-screenshot"]["details"]["data"].replace("data:image/jpeg;base64,","")
+ 
+#NEEDS TO BE DECODED base64.b64decode(img_data_final)
+
+#LCP lazily loaded 
+
+lcp_lazy_loaded = final["lighthouseResult"]["audits"]["lcp-lazy-loaded"]["score"]
+ 
+print("LCP lazy loaded score: " + str(lcp_lazy_loaded))
+
+try:
+    list_lcp_lazy_loaded = []
+    for x in final["lighthouseResult"]["audits"]["lcp-lazy-loaded"]["details"]["items"]:
+        nodes = x["node"]["nodeLabel"]
+        snippet = x["node"]["snippet"]
+        list_lcp_lazy_loaded.append([nodes,snippet])
+
+    print("ALL in list_lcp_lazy_loaded")
+    print("Example:")
+    if list_lcp_lazy_loaded != []:
+        print(list_lcp_lazy_loaded[0])
+    else:
+        print("No entries!")
+except:
+    print("Nope")
+#Duplicated JS
+
+duplicated_javascript = final["lighthouseResult"]["audits"]["duplicated-javascript"]["score"]
+
+print("Duplicated JS score: " + str(duplicated_javascript))
+
+list_duplicated_javascript = []
+for x in final["lighthouseResult"]["audits"]["duplicated-javascript"]["details"]["items"]:
+    list_duplicated_javascript.append(x)
+print("ALL in list_duplicated_javascript")
+print("Example:")
+if list_duplicated_javascript != []:
+    print(list_duplicated_javascript[0])
+else:
+    print("No entries!")
+
+#Non Composited animations
+non_composited_animations = final["lighthouseResult"]["audits"]["non-composited-animations"]["score"]
+print("Non composited Animations score: " + str(non_composited_animations))
+ 
+list_composited_animations = []
+for x in final["lighthouseResult"]["audits"]["non-composited-animations"]["details"]["items"]:
+    animation = x["subItems"]["items"][0]["animation"]
+    failure = x["subItems"]["items"][0]["failureReason"]
+    list_composited_animations.append([animation,failure])
+print("ALL in list_composited_animations")
+print("Example:")
+if list_composited_animations != []:
+    print(list_composited_animations[0])
+else:
+    print("No entries!")
+
+#Legacy JS
+
+legacy_js = final["lighthouseResult"]["audits"]["legacy-javascript"]["score"]
+
+
+print("Legacy JS score: " + str(legacy_js))
+
+urls_legacy_js = []
+for x in final["lighthouseResult"]["audits"]["legacy-javascript"]["details"]["items"]:
+    for y in x["subItems"]["items"]:
+        urls_legacy_js.append([y["location"]["url"]])
+print("ALL in urls_legacy_js")
+print("Example:")
+if urls_legacy_js != []:
+    print(urls_legacy_js[0])
+else:
+    print("No entries!")
+
+#Unsized images
+
+unsized_images = final["lighthouseResult"]["audits"]["unsized-images"]["score"]
+ 
+print("Unsized images score: " + str(unsized_images))
+
+unsized_images_list = []
+for x in final["lighthouseResult"]["audits"]["unsized-images"]["details"]["items"]:
+    unsized_images_list.append([x["url"], x["node"]["snippet"]])
+print("ALL in unsized_images_list")
+print("Example:")
+if unsized_images_list != []:
+    print(unsized_images_list[0])
+else:
+    print("No entries!")
+
+#TREEMAP 
+list_apps = []
+for x in final["lighthouseResult"]["audits"]["script-treemap-data"]["details"]["nodes"]:
+    try:
+        list_apps.append([x["name"],x["resourceBytes"], x["unusedBytes"]])
+    except:
+        list_apps.append([x["name"],x["resourceBytes"], 0])   
+print("ALL in list_apps")
+print("Example:")
+if list_apps != []:
+    print(list_apps[0])
+else:
+    print("No entries!")
+#Third party facade
+
+third_party_facade = final["lighthouseResult"]["audits"]["third-party-facades"]["score"]
+print("Third party facade score: " + str(third_party_facade))
+
+#Preload LCP image
+preload_lcp_image = final["lighthouseResult"]["audits"]["prioritize-lcp-image"]["score"]
+print("Preload LCP score: " + str(preload_lcp_image))
+list_preload_lcp_images = []
+for x in final["lighthouseResult"]["audits"]["prioritize-lcp-image"]["details"]["items"]:
+    list_preload_lcp_images.append(x)
+print("ALL in list_preload_lcp_images")
+print("Example:")
+if list_preload_lcp_images != []:
+    print(list_preload_lcp_images[0])
+else:
+    print("No entries!")
 
 
 """
