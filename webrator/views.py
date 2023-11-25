@@ -30,7 +30,7 @@ class AnalyticsView(APIView):
 
 
 class PersonaView(APIView):
-    def get(self, request):
+    def post(self, request):
         serializer = PersonaInputSerialier(data=request.data)
         serializer.is_valid(raise_exception=True)
 
