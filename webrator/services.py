@@ -422,10 +422,12 @@ def parse_json(final):
     final_json["list_compressions_texts"] = list_compressions_texts
 
     #LCP
-    lcp_elements = final["lighthouseResult"]["audits"]["largest-contentful-paint-element"]["displayValue"]
-    final_json["lcp_elements_description"] = final["lighthouseResult"]["audits"]["largest-contentful-paint-element"]["description"]
-    final_json["lcp_elements"] = lcp_elements
-
+    try:
+        lcp_elements = final["lighthouseResult"]["audits"]["largest-contentful-paint-element"]["displayValue"]
+        final_json["lcp_elements_description"] = final["lighthouseResult"]["audits"]["largest-contentful-paint-element"]["description"]
+        final_json["lcp_elements"] = lcp_elements
+    except:
+        pass
 
     #Animated content score
 
@@ -627,10 +629,10 @@ def parse_json(final):
     final_json["unsized_images"] = unsized_images
     
 
-    unsized_images_list = []
-    for x in final["lighthouseResult"]["audits"]["unsized-images"]["details"]["items"]:
-        unsized_images_list.append([x["url"], x["node"]["snippet"]])
-    final_json["unsized_images_list"] = unsized_images_list
+    # unsized_images_list = []
+    # for x in final["lighthouseResult"]["audits"]["unsized-images"]["details"]["items"]:
+    #     unsized_images_list.append([x["url"], x["node"]["snippet"]])
+    #final_json["unsized_images_list"] = unsized_images_list
     #TREEMAP 
     list_apps = []
     for x in final["lighthouseResult"]["audits"]["script-treemap-data"]["details"]["nodes"]:

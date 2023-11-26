@@ -6,6 +6,10 @@ test.ipynb
 # C extensions
 *.so
 
+/chroma_db/
+/test_files/
+/tips/
+
 # Distribution / packaging
 .Python
 build/

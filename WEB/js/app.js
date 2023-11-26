@@ -8,4 +8,6 @@ getYear();
 
 
 
-
+document.getElementById('boss').addEventListener('click', function (event) {
+    event.preventDefault();
+});

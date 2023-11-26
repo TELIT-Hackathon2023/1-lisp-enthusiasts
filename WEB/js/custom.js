@@ -17,7 +17,7 @@ function submitPersonas() {
   //       console.error('Error:', error);
   //     });
 
-  fetch('personas.json')
+  fetch('../text_files/personas.json')
   .then(response => response.json())
   .then(data => {
     renderPersonas(data);
@@ -28,12 +28,32 @@ function submitPersonas() {
 
 function main() {
   submitPersonas()
-
+  
+  renderTips()
   renderObsolete()
-
   renderContrast()
 
   submitForm()
+}
+
+function renderTips() {
+  console.log("HERE")
+  fetch('../tips/tips.txt')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      displayTips(data)
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
+function displayTips(data) {
+  const outputDiv = document.getElementById('custom');
+  var tempElement = document.createElement('div');
+  tempElement.innerHTML = "<strong>"+data+"</strong>";
+  outputDiv.appendChild(tempElement)
 }
 
 function submitForm() {
@@ -60,7 +80,7 @@ function submitForm() {
         console.error('Error:', error);
       });
       */
-      fetch('data.json')
+      fetch('../text_files/data.json')
       .then(response => response.json())
       .then(data => {
         renderData(data);
@@ -102,14 +122,11 @@ function renderContrast() {
 
 
 function renderObsolete() {
-  var urlInput = document.getElementById('urlInput');
-  var formData = new FormData();
-  formData.append('url', urlInput.value);
+  // var urlInput = document.getElementById('urlInput');
+  // var formData = new FormData();
+  // formData.append('url', urlInput.value);
 
-  fetch('http://localhost:8000/api/html', {
-      method: 'POST',
-      body: formData
-    })
+  fetch('../text_files/html.txt',) 
       .then(response => response.json())
       .then(data => {
         findObsoleteTags(data)
@@ -203,6 +220,27 @@ function renderData(data) {
 }
 
 
+function append_div_turbo(title, value, category, description) {
+  const containerDiv = document.createElement('div');
+  containerDiv.classList.add('grid-item');
+  if (value >= 80) {
+    containerDiv.classList.add('g');
+  }
+  else {
+    containerDiv.classList.add('o');
+  }
+  const fcpLabel = document.createElement('strong');
+  fcpLabel.textContent = title + ' (' + category + ') = ' + value;
+  const loremParagraph = document.createElement('p');
+  loremParagraph.textContent = description;
+
+  containerDiv.appendChild(fcpLabel);
+  containerDiv.appendChild(loremParagraph);
+  const outputDiv = document.getElementById('output');
+  outputDiv.appendChild(containerDiv);
+}
+
+
 function append_div(title, value, category, description) {
   const containerDiv = document.createElement('div');
   containerDiv.classList.add('grid-item');
@@ -267,7 +305,7 @@ function render_score(data) {
     else {
       category = "BAD"
     }
-    append_div("Overall score", data.overall_score, category, 'Overall performance and design score')
+    append_div_turbo("Overall score", data.overall_score, category, 'Overall performance and design score')
   }
 
   total_tasks_time = data.total_tasks_time
