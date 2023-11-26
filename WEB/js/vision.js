@@ -251,6 +251,8 @@ function renderTips() {
   
   function append_div(title, value, category, description) {
     const containerDiv = document.createElement('div');
+
+    
     containerDiv.classList.add('grid-item');
     const fcpLabel = document.createElement('strong');
     fcpLabel.textContent = title + ' (' + category + ') = ' + value;
@@ -332,8 +334,17 @@ function renderTips() {
     else {
       category = "BAD"
     }
-  
+
     const containerDiv = document.createElement('div');
+
+    if (score >= 0.9) {
+      containerDiv.classList.add('g');
+    }
+    else {
+      containerDiv.classList.add('o');
+    }
+  
+
     containerDiv.classList.add('grid-item');
     const fcpLabel = document.createElement('strong');
     fcpLabel.textContent = title + ' (' + category + " score: " + score + ')';

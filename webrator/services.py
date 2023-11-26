@@ -38,7 +38,7 @@ def get_web_type_from_users(json_data):
     prompt += "I would like to help this groups of people by creating a website for them. I have three websites, one for technical people, one for non technical people and one for artists. On average, which website do you think this group of people would like most ? I need to divide them on average it doesnt need to be precise. Answer with only one word with one of the three websites i mentioned. That means technical, non-technical or artists Thank you"
     
     completion = client.chat.completions.create(
-    model="gpt-4",
+    model="gpt-4-1106-preview",
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": prompt}
@@ -138,12 +138,12 @@ def parse_json(final):
     print("Event listeners score: " + str(event_listeners_score))
     final_json["event_listeners_score"] = event_listeners_score
     listevents = []
-    for x in range (len(final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"][x]["url"]
-        line = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"][x]["label"]
-        list1 = [url, line]
-        listevents.append(list1)
-    final_json["listevents"] = listevents
+    # for x in range (len(final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"])):
+    #     url = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"][x]["url"]
+    #     line = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"][x]["label"]
+    #     list1 = [url, line]
+    #     listevents.append(list1)
+    # final_json["listevents"] = listevents
     #DOM SIZE
 
     dom_size_score = final["lighthouseResult"]["audits"]["dom-size"]["score"]

@@ -67,7 +67,7 @@ class PersonaView(APIView):
         ]
 
         response = client.chat.completions.create(
-            model='gpt-4',
+            model='gpt-4-1106-preview',
             messages=messages
         )
 
@@ -159,7 +159,7 @@ class TipstAPIView(APIView):
         prompt = ChatPromptTemplate.from_template(template)
 
         llm = ChatOpenAI(
-            model_name="gpt-4",
+            model_name="gpt-4-1106-preview",
             temperature=0)
 
         chain = (
