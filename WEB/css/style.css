@@ -1,4 +1,34 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Open+Sans:wght@300;400;600;700&display=swap");
+
+
+
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+  gap: 10px; /* Gap between grid items */
+  max-width: 1000px; /* Limiting the maximum width of the container */
+  margin: 0 auto; /* Center the container on the page */
+}
+
+/* Style for the grid items (optional) */
+.grid-item {
+  background-color: #3498db;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
 body {
   font-family: "Open Sans", sans-serif;
   color: #0c0c0c;

@@ -4,7 +4,32 @@ from urllib.parse import urljoin, urlparse
 
 from config.settings import client
 
+from colorthief import ColorThief
+from pyppeteer import launch
+
 MAX_DEPTH = 1
+
+
+def get_dominant_colors(file_path, num_colors=2):
+    color_thief = ColorThief(file_path)
+    dominant_colors = color_thief.get_palette(color_count=num_colors)
+
+    return dominant_colors
+
+def calculate_luminance(color):
+        r, g, b = color
+        r = r / 255.0 if r <= 10 else ((r / 255.0 + 0.055) / 1.055) ** 2.4
+        g = g / 255.0 if g <= 10 else ((g / 255.0 + 0.055) / 1.055) ** 2.4
+        b = b / 255.0 if b <= 10 else ((b / 255.0 + 0.055) / 1.055) ** 2.4
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+def get_color_contrast(color1, color2):
+    luminance1 = calculate_luminance(color1)
+    luminance2 = calculate_luminance(color2)
+
+    contrast_ratio = (max(luminance1, luminance2) + 0.05) / (min(luminance1, luminance2) + 0.05)
+
+    return contrast_ratio
 
 def get_web_type_from_users(json_data):
     users = list(json_data.keys())
@@ -62,35 +87,18 @@ def parse_json(final):
     final_json = {}
     if "loadingExperience" in final:
         if "metrics" in final["loadingExperience"]:
-            fcp = final["loadingExperience"]["metrics"]["FIRST_CONTENTFUL_PAINT_MS"]["percentile"] #into seconds (/1000)
-            fid = final["loadingExperience"]["metrics"]["FIRST_INPUT_DELAY_MS"]["percentile"] #into seconds (/1000)
-            lcp = final["loadingExperience"]["metrics"]["LARGEST_CONTENTFUL_PAINT_MS"]["percentile"]
-            cls = final["loadingExperience"]["metrics"]["CUMULATIVE_LAYOUT_SHIFT_SCORE"]["percentile"]/100
+            final_json["fcp"] = final["loadingExperience"]["metrics"]["FIRST_CONTENTFUL_PAINT_MS"]["percentile"] #into seconds (/1000)
+            final_json["fid"] = final["loadingExperience"]["metrics"]["FIRST_INPUT_DELAY_MS"]["percentile"] #into seconds (/1000)
+            final_json["lcp"] = final["loadingExperience"]["metrics"]["LARGEST_CONTENTFUL_PAINT_MS"]["percentile"]
+            final_json["cls"] = final["loadingExperience"]["metrics"]["CUMULATIVE_LAYOUT_SHIFT_SCORE"]["percentile"]/100
+            final_json["fcp_category"] = final["loadingExperience"]["metrics"]["FIRST_CONTENTFUL_PAINT_MS"]["category"]
+            final_json["fid_category"] = final["loadingExperience"]["metrics"]["FIRST_INPUT_DELAY_MS"]["category"]
+            final_json["lcp_category"] = final["loadingExperience"]["metrics"]["LARGEST_CONTENTFUL_PAINT_MS"]["category"]
+            final_json["cls_category"] = final["loadingExperience"]["metrics"]["CUMULATIVE_LAYOUT_SHIFT_SCORE"]["category"]
 
-            fcp_score = final["loadingExperience"]["metrics"]["FIRST_CONTENTFUL_PAINT_MS"]["category"]
-            fid_score = final["loadingExperience"]["metrics"]["FIRST_INPUT_DELAY_MS"]["category"]
-            lcp_score = final["loadingExperience"]["metrics"]["LARGEST_CONTENTFUL_PAINT_MS"]["category"]
-            cls_score = final["loadingExperience"]["metrics"]["CUMULATIVE_LAYOUT_SHIFT_SCORE"]["category"]
-
-            final_json["fcp"] = fcp
-            final_json["fid"] = fid
-            final_json["lcp"] = lcp
-            final_json["cls"] = cls
-            final_json["fcp_category"] = fcp_score
-            final_json["fid_category"] = fid_score
-            final_json["lcp_category"] = lcp_score
-            final_json["cls_category"] = cls_score
-
-    overall_score = final["lighthouseResult"]["categories"]["performance"]["score"] * 100
-
-    final_json["overall_score"] = overall_score
-
-    total_tasks = final["lighthouseResult"]["audits"]["diagnostics"]["details"]["items"][0]["numTasks"]
-    total_tasks_time = final["lighthouseResult"]["audits"]["diagnostics"]["details"]["items"][0]["totalTaskTime"]
-    
-    
-    final_json["total_tasks"] = total_tasks
-    final_json["total_tasks_time"] = total_tasks_time
+    final_json["overall_score"] = final["lighthouseResult"]["categories"]["performance"]["score"] * 100
+    final_json["total_tasks"] = final["lighthouseResult"]["audits"]["diagnostics"]["details"]["items"][0]["numTasks"]
+    final_json["total_tasks_time"] = final["lighthouseResult"]["audits"]["diagnostics"]["details"]["items"][0]["totalTaskTime"]
 
 
     #NETWORK REQUESTS

@@ -1,13 +1,3 @@
-// to get current year
-function getYear() {
-    var currentDate = new Date();
-    var currentYear = currentDate.getFullYear();
-    document.querySelector("#displayYear").innerHTML = currentYear;
-}
-
-getYear();
-
-
 function submitPersonas() {
   var urlInput = document.getElementById('urlInput');
   var formData = new FormData();
@@ -30,13 +20,20 @@ function submitPersonas() {
   fetch('personas.json')
   .then(response => response.json())
   .then(data => {
-    // Do something with the data
-    console.log(data);
-    // Call a function to render the data
     renderPersonas(data);
   })
   .catch(error => console.error('Error fetching data:', error));
 
+}
+
+function main() {
+  submitPersonas()
+
+  renderObsolete()
+
+  renderContrast()
+
+  submitForm()
 }
 
 function submitForm() {
@@ -66,13 +63,94 @@ function submitForm() {
       fetch('data.json')
       .then(response => response.json())
       .then(data => {
-        // Do something with the data
-        console.log(data);
-        // Call a function to render the data
         renderData(data);
       })
       .catch(error => console.error('Error fetching data:', error));
   }
+
+
+
+function displayContrast(contrast) {
+  const outputDiv = document.getElementById('custom');
+  var tempElement = document.createElement('div');
+  tempElement.innerHTML = "The contrast index of your websites dominant colors is: " + contrast.contrast;
+  outputDiv.appendChild(tempElement)
+}
+
+
+function renderContrast() {
+  var urlInput = document.getElementById('urlInput');
+  var formData = new FormData();
+  formData.append('url', urlInput.value);
+
+  fetch('http://localhost:8000/api/contrast', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        displayContrast(data)
+        console.log(data)
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+
+
+
+
+function renderObsolete() {
+  var urlInput = document.getElementById('urlInput');
+  var formData = new FormData();
+  formData.append('url', urlInput.value);
+
+  fetch('http://localhost:8000/api/html', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        findObsoleteTags(data)
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+
+function findObsoleteTags(data) {
+    const obsoleteTags = ['font', 'center', 'strike', 's', 'u', 'applet', 'basefont', 'big', 'blink', 'marquee'];
+
+    var tempElement = document.createElement('div');
+    tempElement.innerHTML = data;
+
+    const allElements = tempElement.getElementsByTagName('*');
+    const obsoleteTagsFound = [];
+
+    for (let i = 0; i < allElements.length; i++) {
+      const tagName = allElements[i].tagName.toLowerCase();
+
+      if (obsoleteTags.includes(tagName)) {
+        obsoleteTagsFound.push(tagName);
+      }
+    }
+
+    var uniqueArray = Array.from(new Set(obsoleteTagsFound));
+    const outputDiv = document.getElementById('custom');
+    const containerDiv = document.createElement('div');
+    const loremParagraph = document.createElement('p');
+
+    if (uniqueArray.length > 0) {
+       loremParagraph.innerText = 'Obsolete HTML tags found: ' + uniqueArray.join(', ')
+    } else {
+      loremParagraph.innerText ='No obsolete HTML tags found.';
+    }
+
+    containerDiv.appendChild(loremParagraph)
+    outputDiv.appendChild(containerDiv)
+}
 
 
 function renderPersonas(data) {
@@ -92,8 +170,6 @@ function renderAudience(data) {
       outputDiv.appendChild(listItem);
     }
   }
-
-  outputDiv.appendChild(orderedList);
 }
 
 
@@ -129,6 +205,7 @@ function renderData(data) {
 
 function append_div(title, value, category, description) {
   const containerDiv = document.createElement('div');
+  containerDiv.classList.add('grid-item');
   const fcpLabel = document.createElement('strong');
   fcpLabel.textContent = title + ' (' + category + ') = ' + value;
   const loremParagraph = document.createElement('p');
@@ -157,7 +234,6 @@ function render_metrics(data) {
 
     let val = keysWithSpecificValue[i].substring(0, lastIndex);
     description = val + "_description"
-    console.log(keysWithSpecificValue[i])
     append_metric(val, data[keysWithSpecificValue[i]], data[description])
 
   }
@@ -212,6 +288,7 @@ function append_metric(title, score, description) {
   }
 
   const containerDiv = document.createElement('div');
+  containerDiv.classList.add('grid-item');
   const fcpLabel = document.createElement('strong');
   fcpLabel.textContent = title + ' (' + category + " score: " + score + ')';
   const loremParagraph = document.createElement('p');
