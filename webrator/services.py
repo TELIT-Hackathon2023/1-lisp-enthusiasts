@@ -105,17 +105,17 @@ def parse_json(final):
     num_requests = len(final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"])
     final_json["num_requests"] = num_requests
     final_json["num_requests_description"] = final["lighthouseResult"]["audits"]["network-requests"]["description"]
-    listrequests = []
-    for x in range (num_requests):
-        endtime = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["networkEndTime"]
-        starttime = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["networkRequestTime"]
-        transfersize = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["transferSize"]
-        resourcesize = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["resourceSize"]
-        url = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["url"]
-        list1 = [endtime, starttime, transfersize, resourcesize, url]
-        listrequests.append(list1)
+    #listrequests = []
+    #for x in range (num_requests):
+    #    endtime = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["networkEndTime"]
+    #    starttime = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["networkRequestTime"]
+    #    transfersize = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["transferSize"]
+    #    resourcesize = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["resourceSize"]
+    #    url = final["lighthouseResult"]["audits"]["network-requests"]["details"]["items"][x]["url"]
+    #    list1 = [endtime, starttime, transfersize, resourcesize, url]
+    #    listrequests.append(list1)
  
-    final_json["list_requests"] = listrequests
+    #final_json["list_requests"] = listrequests
     #MAINTHREAD WORK
 
     mainthread_score = final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["score"]
@@ -124,26 +124,26 @@ def parse_json(final):
    
     final_json["mainthread_score"] = mainthread_score
     final_json["mainthread_value"] = mainthread_duration
-    listprocesses = []
-    for x in range (len(final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["details"]["items"])):
-        duration = final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["details"]["items"][x]["duration"]
-        process = final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["details"]["items"][x]["groupLabel"]
-        list1 = [duration,process]
-        listprocesses.append(list1)
+    #listprocesses = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["details"]["items"])):
+    #    duration = final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["details"]["items"][x]["duration"]
+    #    process = final["lighthouseResult"]["audits"]["mainthread-work-breakdown"]["details"]["items"][x]["groupLabel"]
+    #    list1 = [duration,process]
+    #    listprocesses.append(list1)
     
-    final_json["listprocesses"] = listprocesses
+    #final_json["listprocesses"] = listprocesses
     #EVENT LISTENERS
     event_listeners_score = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["score"]
     final_json["event_listeners_description"] = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["description"]
     print("Event listeners score: " + str(event_listeners_score))
     final_json["event_listeners_score"] = event_listeners_score
-    listevents = []
-    for x in range (len(final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"][x]["url"]
-        line = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"][x]["label"]
-        list1 = [url, line]
-        listevents.append(list1)
-    final_json["listevents"] = listevents
+    #listevents = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"][x]["url"]
+    #    line = final["lighthouseResult"]["audits"]["uses-passive-event-listeners"]["details"]["items"][x]["label"]
+    #    list1 = [url, line]
+    #    listevents.append(list1)
+    #final_json["listevents"] = listevents
     #DOM SIZE
 
     dom_size_score = final["lighthouseResult"]["audits"]["dom-size"]["score"]
@@ -160,16 +160,16 @@ def parse_json(final):
     final_json["offscreen_images_elements"] = offscreen_images_val
 
 
-    listoffscreenimages = []
-    for x in range (offscreen_images_val):
-        url = final["lighthouseResult"]["audits"]["offscreen-images"]["details"]["items"][x]["url"]
-        totalbytes = final["lighthouseResult"]["audits"]["offscreen-images"]["details"]["items"][x]["totalBytes"]
-        wastedbytes = final["lighthouseResult"]["audits"]["offscreen-images"]["details"]["items"][x]["wastedBytes"]
-        wastedpercent = final["lighthouseResult"]["audits"]["offscreen-images"]["details"]["items"][x]["wastedPercent"]
-        list1 = [url, totalbytes, wastedbytes, wastedpercent]
-        listoffscreenimages.append(list1)
+    #listoffscreenimages = []
+    #for x in range (offscreen_images_val):
+    #    url = final["lighthouseResult"]["audits"]["offscreen-images"]["details"]["items"][x]["url"]
+    #    totalbytes = final["lighthouseResult"]["audits"]["offscreen-images"]["details"]["items"][x]["totalBytes"]
+    #    wastedbytes = final["lighthouseResult"]["audits"]["offscreen-images"]["details"]["items"][x]["wastedBytes"]
+    #    wastedpercent = final["lighthouseResult"]["audits"]["offscreen-images"]["details"]["items"][x]["wastedPercent"]
+    #    list1 = [url, totalbytes, wastedbytes, wastedpercent]
+    #    listoffscreenimages.append(list1)
 
-    final_json["listoffscreenimages"] = listoffscreenimages
+    #final_json["listoffscreenimages"] = listoffscreenimages
 
     
 
@@ -197,13 +197,13 @@ def parse_json(final):
     
     final_json["bytes_weight_score"] = bytes_weight_score
     final_json["bytes_weight"] = bytes_weight
-    listbytes = []
-    for x in range (len(final["lighthouseResult"]["audits"]["total-byte-weight"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["total-byte-weight"]["details"]["items"][x]["url"]
-        bytes_total = final["lighthouseResult"]["audits"]["total-byte-weight"]["details"]["items"][x]["totalBytes"]
-        list1 = [url, bytes_total]
-        listbytes.append(list1)
-    final_json["listbytes"] = listbytes
+    #listbytes = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["total-byte-weight"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["total-byte-weight"]["details"]["items"][x]["url"]
+    #    bytes_total = final["lighthouseResult"]["audits"]["total-byte-weight"]["details"]["items"][x]["totalBytes"]
+    #    list1 = [url, bytes_total]
+    #    listbytes.append(list1)
+    #final_json["listbytes"] = listbytes
     #Responsive images
 
     responsive_images_score = final["lighthouseResult"]["audits"]["uses-responsive-images"]["score"]
@@ -217,30 +217,30 @@ def parse_json(final):
         final_json["responsive_image_savings"] = ""
 
         
-    listresponsivesavings = []
-    for x in range (len(final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"][x]["url"]
-        wastedbytes = final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"][x]["wastedBytes"]
-        totalbytes = final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"][x]["totalBytes"]
-        list1 = [url, wastedbytes, totalbytes]
-        listresponsivesavings.append(list1)
+    #listresponsivesavings = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"][x]["url"]
+    #    wastedbytes = final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"][x]["wastedBytes"]
+    #    totalbytes = final["lighthouseResult"]["audits"]["uses-responsive-images"]["details"]["items"][x]["totalBytes"]
+    #    list1 = [url, wastedbytes, totalbytes]
+    #    listresponsivesavings.append(list1)
 
-    final_json["listresponsivesavings"] = listresponsivesavings
+    #final_json["listresponsivesavings"] = listresponsivesavings
     #Blocking resources
     blocking_resources_score = final["lighthouseResult"]["audits"]["render-blocking-resources"]["score"]
     #blocking_resoures_savings = final["lighthouseResult"]["audits"]["render-blocking-resources"]["displayValue"]
     final_json["blocking_resources_score"] = blocking_resources_score 
     final_json["blocking_resources_description"] = final["lighthouseResult"]["audits"]["render-blocking-resources"]["description"]
 
-    listblockingresources = []
-    for x in range (len(final["lighthouseResult"]["audits"]["render-blocking-resources"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["render-blocking-resources"]["details"]["items"][x]["url"]
-        totalbytes = final["lighthouseResult"]["audits"]["render-blocking-resources"]["details"]["items"][x]["totalBytes"]
-        wastedbytes = final["lighthouseResult"]["audits"]["render-blocking-resources"]["details"]["items"][x]["wastedMs"]
-        list1 = [url, totalbytes, wastedbytes]
-        listblockingresources.append(list1)
+    #listblockingresources = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["render-blocking-resources"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["render-blocking-resources"]["details"]["items"][x]["url"]
+    #    totalbytes = final["lighthouseResult"]["audits"]["render-blocking-resources"]["details"]["items"][x]["totalBytes"]
+    #    wastedbytes = final["lighthouseResult"]["audits"]["render-blocking-resources"]["details"]["items"][x]["wastedMs"]
+    #    list1 = [url, totalbytes, wastedbytes]
+    #    listblockingresources.append(list1)
 
-    final_json["listblockingresources"] = listblockingresources 
+    #final_json["listblockingresources"] = listblockingresources 
 
     #REL preload use
 
@@ -248,13 +248,13 @@ def parse_json(final):
     final_json["rel_preload_description"] = final["lighthouseResult"]["audits"]["uses-rel-preload"]["description"]
     #rel_preload_savings = final["lighthouseResult"]["audits"]["uses-rel-preload"]["displayValue"]
     final_json["rel_preload_score"] = rel_preload_score 
-    listrelpreload = []
-    for x in range (len(final["lighthouseResult"]["audits"]["uses-rel-preload"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["uses-rel-preload"]["details"]["items"][x]["url"]
-        wastedms = final["lighthouseResult"]["audits"]["uses-rel-preload"]["details"]["items"][x]["wastedMs"]
-        list1 = [url, wastedms]
-        listrelpreload.append(list1)   
-    final_json["listrelpreload"] = listrelpreload
+    #listrelpreload = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["uses-rel-preload"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["uses-rel-preload"]["details"]["items"][x]["url"]
+    #    wastedms = final["lighthouseResult"]["audits"]["uses-rel-preload"]["details"]["items"][x]["wastedMs"]
+    #    list1 = [url, wastedms]
+    #    listrelpreload.append(list1)   
+    #final_json["listrelpreload"] = listrelpreload
     #Redirects
     redirects_score = final["lighthouseResult"]["audits"]["redirects"]["score"]
     final_json["redirects_description"] = final["lighthouseResult"]["audits"]["redirects"]["description"]
@@ -262,14 +262,14 @@ def parse_json(final):
     final_json["redirects_score"] = redirects_score
     final_json["num_redirects"] = num_redirects
 
-    listredirects = []
-    for x in range (num_redirects):
-        url = final["lighthouseResult"]["audits"]["redirects"]["details"]["items"][x]["url"]
-        wastedms = final["lighthouseResult"]["audits"]["redirects"]["details"]["items"][x]["wastedMs"]
-        list1 = [url,wastedms]
-        listredirects.append(list1)
+    #listredirects = []
+    #for x in range (num_redirects):
+    #    url = final["lighthouseResult"]["audits"]["redirects"]["details"]["items"][x]["url"]
+    #    wastedms = final["lighthouseResult"]["audits"]["redirects"]["details"]["items"][x]["wastedMs"]
+    #    list1 = [url,wastedms]
+    #    listredirects.append(list1)
 
-    final_json["listredirects"] = listredirects
+    #final_json["listredirects"] = listredirects
     #Unused JS
 
     unused_js_score = final["lighthouseResult"]["audits"]["unused-javascript"]["score"]
@@ -278,16 +278,16 @@ def parse_json(final):
     final_json["unused_js_score"] = unused_js_score
     final_json["num_unused_js"] = num_unused_js
 
-    listunusedjavascript = []
-    for x in range (num_unused_js):
-        url = final["lighthouseResult"]["audits"]["unused-javascript"]["details"]["items"][x]["url"]
-        totalbytes = final["lighthouseResult"]["audits"]["unused-javascript"]["details"]["items"][x]["totalBytes"]
-        wastedbytes = final["lighthouseResult"]["audits"]["unused-javascript"]["details"]["items"][x]["wastedBytes"]
-        wastedpercentage= final["lighthouseResult"]["audits"]["unused-javascript"]["details"]["items"][x]["wastedPercent"]
-        list1 = [url, totalbytes, wastedbytes, wastedpercentage]
-        listunusedjavascript.append(list1)
+    #listunusedjavascript = []
+    #for x in range (num_unused_js):
+    #    url = final["lighthouseResult"]["audits"]["unused-javascript"]["details"]["items"][x]["url"]
+    #    totalbytes = final["lighthouseResult"]["audits"]["unused-javascript"]["details"]["items"][x]["totalBytes"]
+    #    wastedbytes = final["lighthouseResult"]["audits"]["unused-javascript"]["details"]["items"][x]["wastedBytes"]
+    #    wastedpercentage= final["lighthouseResult"]["audits"]["unused-javascript"]["details"]["items"][x]["wastedPercent"]
+    #    list1 = [url, totalbytes, wastedbytes, wastedpercentage]
+    #    listunusedjavascript.append(list1)
 
-    final_json["listunusedjavascript"] = listunusedjavascript
+    #final_json["listunusedjavascript"] = listunusedjavascript
     #Blocking time
 
     blocking_time_score = final["lighthouseResult"]["audits"]["total-blocking-time"]["score"]
@@ -358,15 +358,15 @@ def parse_json(final):
     final_json["optimized_images_score"] = optimized_images_score
     final_json["optimized_images"] = optimized_images
 
-    listoptimisedimages = []
-    for x in range (len(final["lighthouseResult"]["audits"]["uses-optimized-images"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["uses-optimized-images"]["details"]["items"][x]["url"]
-        wastedbytes = final["lighthouseResult"]["audits"]["uses-optimized-images"]["details"]["items"][x]["wastedBytes"]
-        totalbytes = final["lighthouseResult"]["audits"]["uses-optimized-images"]["details"]["items"][x]["totalBytes"]
-        list1 = [url, wastedbytes, totalbytes]
-        listoptimisedimages.append(list1)
+    #listoptimisedimages = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["uses-optimized-images"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["uses-optimized-images"]["details"]["items"][x]["url"]
+    #    wastedbytes = final["lighthouseResult"]["audits"]["uses-optimized-images"]["details"]["items"][x]["wastedBytes"]
+    #    totalbytes = final["lighthouseResult"]["audits"]["uses-optimized-images"]["details"]["items"][x]["totalBytes"]
+    #    list1 = [url, wastedbytes, totalbytes]
+    #    listoptimisedimages.append(list1)
 
-    final_json["listoptimisedimages"] = listoptimisedimages
+    #final_json["listoptimisedimages"] = listoptimisedimages
     #Unminiified JS
 
     unminified_javascript_score = final["lighthouseResult"]["audits"]["unminified-javascript"]["score"]
@@ -374,16 +374,16 @@ def parse_json(final):
     #unminified_javascript_savings = final["lighthouseResult"]["audits"]["unminified-javascript"]["displayValue"]
     final_json["unminified_javascript_score"] = unminified_javascript_score
 
-    listunminifiedjavascript = []
-    for x in range (len(final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"][x]["url"]
-        wastedbytes = final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"][x]["wastedBytes"]
-        totalbytes = final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"][x]["totalBytes"]
-        wastedpercent = totalbytes = final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"][x]["wastedPercent"]
-        list1 = [url, wastedbytes, totalbytes, wastedpercent]
-        listunminifiedjavascript.append(list1)
+    #listunminifiedjavascript = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"][x]["url"]
+    #    wastedbytes = final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"][x]["wastedBytes"]
+    #    totalbytes = final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"][x]["totalBytes"]
+    #    wastedpercent = totalbytes = final["lighthouseResult"]["audits"]["unminified-javascript"]["details"]["items"][x]["wastedPercent"]
+    #    list1 = [url, wastedbytes, totalbytes, wastedpercent]
+    #    listunminifiedjavascript.append(list1)
 
-    final_json["listunminifiedjavascript"] = listunminifiedjavascript
+    #final_json["listunminifiedjavascript"] = listunminifiedjavascript
     #Font display
 
     font_display_score = final["lighthouseResult"]["audits"]["font-display"]["score"]
@@ -403,23 +403,23 @@ def parse_json(final):
     final_json["no_document_write_description"] = final["lighthouseResult"]["audits"]["no-document-write"]["description"]
     final_json["no_document_write_score"] = no_document_write_score
     
-    listnodocumentwrite = []
-    for x in range (len(final["lighthouseResult"]["audits"]["no-document-write"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["no-document-write"]["details"]["items"][x]["url"]
-        line = final["lighthouseResult"]["audits"]["no-document-write"]["details"]["items"][x]["label"]
-        list1 = [url, line]
-        listnodocumentwrite.append(list1)
-    final_json["listnodocumentwrite"] = listnodocumentwrite
+    #listnodocumentwrite = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["no-document-write"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["no-document-write"]["details"]["items"][x]["url"]
+    #    line = final["lighthouseResult"]["audits"]["no-document-write"]["details"]["items"][x]["label"]
+    #    list1 = [url, line]
+    #    listnodocumentwrite.append(list1)
+    #final_json["listnodocumentwrite"] = listnodocumentwrite
     #Text compression
 
     text_compression_score = final["lighthouseResult"]["audits"]["uses-text-compression"]["score"]
     final_json["text_compression_description"] = final["lighthouseResult"]["audits"]["uses-text-compression"]["description"]
     final_json["text_compression_score"] = text_compression_score
-    list_compressions_texts = []
-    for x in final["lighthouseResult"]["audits"]["uses-text-compression"]["details"]["items"]:
-        list_compressions_texts.append(x)
+    #list_compressions_texts = []
+    #for x in final["lighthouseResult"]["audits"]["uses-text-compression"]["details"]["items"]:
+    #    list_compressions_texts.append(x)
 
-    final_json["list_compressions_texts"] = list_compressions_texts
+    #final_json["list_compressions_texts"] = list_compressions_texts
 
     #LCP
     try:
@@ -482,16 +482,16 @@ def parse_json(final):
     except:
         final_json["resources_to_cache"] = ""
 
-    listcache = []
-    for x in range (len(final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"])):
-        cachelifetime = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["cacheLifetimeMs"]
-        totalbytes = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["totalBytes"]
-        wastedbytes = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["wastedBytes"]
-        url = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["url"]
-        list1 = [cachelifetime, totalbytes, wastedbytes, url]
-        listcache.append(list1)
+    #listcache = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"])):
+    #    cachelifetime = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["cacheLifetimeMs"]
+    #    totalbytes = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["totalBytes"]
+    #    wastedbytes = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["wastedBytes"]
+    #    url = final["lighthouseResult"]["audits"]["uses-long-cache-ttl"]["details"]["items"][x]["url"]
+    #    list1 = [cachelifetime, totalbytes, wastedbytes, url]
+    #   listcache.append(list1)
 
-    final_json["listcache"] = listcache
+    #final_json["listcache"] = listcache
 
 
     #FID
@@ -548,15 +548,15 @@ def parse_json(final):
     final_json["modern_images_score"] = modern_images_score
     final_json["modern_images_savings"] = modern_images_savings 
 
-    listmodernimages = []
-    for x in range (len(final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"])):
-        url = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["url"]
-        wastedbytes = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["wastedBytes"]
-        totalbytes = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["totalBytes"]
-        list1 = [url, wastedbytes, totalbytes]
-        listmodernimages.append(list1)
+    #listmodernimages = []
+    #for x in range (len(final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"])):
+    #    url = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["url"]
+    #    wastedbytes = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["wastedBytes"]
+    #    totalbytes = final["lighthouseResult"]["audits"]["modern-image-formats"]["details"]["items"][x]["totalBytes"]
+    #    list1 = [url, wastedbytes, totalbytes]
+    #    listmodernimages.append(list1)
 
-    final_json["listmodernimages"] = listmodernimages 
+    #final_json["listmodernimages"] = listmodernimages 
     #third party entity
 
     third_party_score = final["lighthouseResult"]["audits"]["third-party-summary"]["score"]
