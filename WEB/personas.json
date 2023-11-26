@@ -1,0 +1,12 @@
+{
+  "response": {
+    "1. Students": "These are individuals who might be interested in studying under Dr. Mach or taking the courses he offers. They might be studying Artificial Intelligence or related fields and are looking for resources or someone with experience in the field to learn from.",
+    "2. Academic peers": "These are also professionals in the realm of AI, Cybernetics or related areas who might be interested in Prof. Mach’s publications, research projects or partnership for potential collaborations.",
+    "3. Research Associates and Collaborators": "These are researchers or scientists engaging in the same or similar fields of study as Prof. Mach. They may be looking for his research inputs, updates about his ongoing or past project details or partnership on new research projects.",
+    "4. Job Applicants": "Individuals looking for opportunities to work under Dr. Mach or his department. They could be looking for positions in research, teaching or other roles relevant to Dr. Mach's field of work.",
+    "5. Conference Organizers": "Individuals or groups who organize academic conferences and are searching for experts in Artificial Intelligence and Cybernetics to invite as speakers or panelists. ",
+    "6. Media": "Journalists or media houses looking for experts in the field of artificial intelligence, cybernetics etc. for interviews or opinions or as reference experts for their articles.",
+    "7. General Public with Interest in AI": "Individuals who have an interest in artificial intelligence or cybernetics. They might be laymen, enthusiasts, hobbyists, or students from other disciplines looking for information or learning resources in these topics."
+  },
+  "type": "technical"
+}

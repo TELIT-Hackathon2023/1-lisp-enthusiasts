@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import AnalyticsInputSerializer, PersonaInputSerialier
-from .services import get_text_from_website, parse_json
+from .services import get_text_from_website, parse_json, get_web_type_from_users
 from config.settings import client
 
 import requests
@@ -58,4 +58,6 @@ class PersonaView(APIView):
                 values = elm.split('___')
                 response[values[0]] = values[1]
 
-        return Response(response)
+        type = get_web_type_from_users(response)
+
+        return Response({"response": response, "type": type})

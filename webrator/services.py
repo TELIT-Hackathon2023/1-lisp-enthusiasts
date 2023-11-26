@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 
+from config.settings import client
+
 MAX_DEPTH = 1
 
 def get_web_type_from_users(json_data):
@@ -11,13 +13,13 @@ def get_web_type_from_users(json_data):
     prompt += "I would like to help this groups of people by creating a website for them. I have three websites, one for technical people, one for non technical people and one for artists. On average, which website do you think this group of people would like most ? I need to divide them on average it doesnt need to be precise. Answer with only one word with one of the three websites i mentioned. That means technical, non-technical or artists Thank you"
     
     completion = client.chat.completions.create(
-    model="gpt-3.5-turbo",
+    model="gpt-4",
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": prompt}
     ])
 
-    return(completion['choices'][0]['message']['content'])
+    return(completion.choices[0].message.content)
 
 
 def get_text_and_html_from_page(url):
@@ -54,6 +56,7 @@ def get_text_from_website(current_url, start_url, visited_urls, depth=0, max_dep
                 cleaned_text += get_text_from_website(absolute_url, start_url, visited_urls, depth + 1, max_depth)
 
     return cleaned_text
+    
     
 def parse_json(final):
     final_json = {}

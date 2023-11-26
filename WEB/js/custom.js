@@ -8,6 +8,37 @@ function getYear() {
 getYear();
 
 
+function submitPersonas() {
+  var urlInput = document.getElementById('urlInput');
+  var formData = new FormData();
+  formData.append('url', urlInput.value);
+
+  // fetch('http://localhost:8000/api/personas', {
+  //     method: 'POST',
+  //     body: formData
+  //   })
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       renderPersonas(data)
+  //       console.log(data);
+  //     })
+  //     .catch(error => {
+  //       // Handle errors
+  //       console.error('Error:', error);
+  //     });
+
+  fetch('personas.json')
+  .then(response => response.json())
+  .then(data => {
+    // Do something with the data
+    console.log(data);
+    // Call a function to render the data
+    renderPersonas(data);
+  })
+  .catch(error => console.error('Error fetching data:', error));
+
+}
+
 function submitForm() {
     // Get the file input and text input values
     var fileInput = document.getElementById('file-upload');
@@ -42,6 +73,51 @@ function submitForm() {
       })
       .catch(error => console.error('Error fetching data:', error));
   }
+
+
+function renderPersonas(data) {
+  renderType(data)
+  renderAudience(data)
+}
+
+
+function renderAudience(data) {
+  data = data.response
+  const outputDiv = document.getElementById('personas');
+
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      const listItem = document.createElement('p');
+      listItem.textContent = `${key} - ${data[key]}`;
+      outputDiv.appendChild(listItem);
+    }
+  }
+
+  outputDiv.appendChild(orderedList);
+}
+
+
+function renderType(data) {
+  const outputDiv = document.getElementById('personas');
+  const containerDiv = document.createElement('div');
+  const fcpLabel = document.createElement('strong');
+  fcpLabel.textContent = "Audience of this website mostly consists of " + data.type + " people!";
+  const loremParagraph = document.createElement('p');
+  
+  if (data.type == 'technical') {
+    loremParagraph.textContent = "For technical people the UI simplicity is less necessary. On the other hand, we advise to focus on security and responsivity aspects more.";
+  }
+  if (data.type == "non-technical") {
+    loremParagraph.textContent = "For non-technical we advise to create very simple and intuitive UI/UX. Latest functionality, animations and advanced interactivity in general might be less important.";
+  }
+  if (data.type == "artists") {
+    loremParagraph.textContent = "Artists tend to value carefully chosen color palette and smooth animations of the website.";
+  }
+
+  containerDiv.appendChild(fcpLabel);
+  containerDiv.appendChild(loremParagraph);
+  outputDiv.appendChild(containerDiv);
+}
 
 
 function renderData(data) {
